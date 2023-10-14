@@ -7,11 +7,17 @@ export default function Game() {
   const [inputValue, setInputValue] = useState("");
   const [randomNums, setRandomNums] = useState([]);
   const [showAnswerCells, setShowAnswerCells] = useState(Array(randomNums.length).fill(false));
-
+  
   // const [showAnswerCells, setShowAnswerCells] = useState(Array(randomNums.length)).fill(false);
   const [timer, setTimer] = useState(60); // 60-second timer
   const [gameCompleted, setGameCompleted] = useState(false);
   const [gameStarted, setGameStarted] = useState(false); // Indicates whether the game has started
+  
+  const handleGameTimeout = () => {
+    // Handle game timeout here (e.g., show a message)
+    resetGame(); // Reset the game
+    setGameStarted(false); // Deactivate the game
+  };
 
   useEffect(() => {
     // Generate random numbers when the component mounts
@@ -68,11 +74,6 @@ export default function Game() {
     setGameCompleted(false); // Reset the game completion status
   };
 
-  const handleGameTimeout = () => {
-    // Handle game timeout here (e.g., show a message)
-    resetGame(); // Reset the game
-    setGameStarted(false); // Deactivate the game
-  };
 
   const startGame = () => {
     setGameStarted(true);
