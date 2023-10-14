@@ -97,7 +97,7 @@ export default function Game() {
       ) : (
         <button onClick={startGame}>START GAME</button>
       )}
-      <Table showAnswerCells={showAnswerCells} randomNums={randomNums} />
+      <Table showAnswerCells={showAnswerCells} randomNums={randomNums} /> 
       
 
     </div>
