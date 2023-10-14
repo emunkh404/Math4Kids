@@ -44,7 +44,8 @@ export default function Game() {
         clearInterval(countdown); // Clean up the interval when the component unmounts
       };
     }
-  }, [timer, gameStarted, handleGameTimeout]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timer, gameStarted]);
 
   const handleInput = (value) => {
     setInputValue(value);
