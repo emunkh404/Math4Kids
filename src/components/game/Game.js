@@ -44,7 +44,7 @@ export default function Game() {
         clearInterval(countdown); // Clean up the interval when the component unmounts
       };
     }
-  }, [timer, gameStarted]);
+  }, [timer, gameStarted, handleGameTimeout]);
 
   const handleInput = (value) => {
     setInputValue(value);
