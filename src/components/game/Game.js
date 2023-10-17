@@ -22,7 +22,8 @@ export default function Game() {
   useEffect(() => {
     // Generate random numbers when the component mounts
     const score = 36; // Replace with the actual score
-    const generatedNumbers = generateRandomNumbers(score);
+    const generatedNumbers = generateRandomNumbers(score); 
+    console.log(generatedNumbers)   
     setRandomNums(generatedNumbers);
     setShowAnswerCells(Array(generatedNumbers.length).fill(false)); // Initialize showAnswerCells
   }, []);
@@ -54,7 +55,7 @@ export default function Game() {
       const updatedShowAnswerCells = [...showAnswerCells];
       updatedShowAnswerCells[currentRowIndex] = true;
       setShowAnswerCells(updatedShowAnswerCells);
-
+      
       if (currentRowIndex < randomNums.length - 1) {
         setCurrentRowIndex(currentRowIndex + 1);
         setInputValue(""); // Reset the input value after a correct answer
