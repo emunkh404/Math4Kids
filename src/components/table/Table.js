@@ -1,6 +1,7 @@
 import React from "react";
+import "./table.css";
 
-function Table({ showAnswerCells, randomNums }) {
+function Table({ correctAnswer, randomNums, activeAnswerIndex }) {
   // Divide randomNums into groups of 10
   const groupedRandomNums = [];
   for (let i = 0; i < randomNums.length; i += 10) {
@@ -21,7 +22,13 @@ function Table({ showAnswerCells, randomNums }) {
             {group.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 <td>{`${row.var1} + ${row.var2}`}</td>
-                <td>{showAnswerCells[rowIndex] ? row.answer : "="}</td>
+                <td
+                  className={activeAnswerIndex === groupIndex * 10 + rowIndex ? "active-cell" : ""}
+                >
+                  {activeAnswerIndex === groupIndex * 10 + rowIndex || correctAnswer === row.answer
+                    ? row.answer
+                    : ""}
+                </td>
               </tr>
             ))}
           </tbody>
