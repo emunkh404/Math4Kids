@@ -2,8 +2,7 @@ const generateRandomNumbers = (score) => {
   const maxScore = 50;
   const percentageThreshold = 0.7;
   let numDigits;
-  const results = [];
-
+ 
   if (score < percentageThreshold * maxScore) {
     // NOT qualified for 70% and above score
     numDigits = 1;
