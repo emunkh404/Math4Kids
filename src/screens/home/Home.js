@@ -26,6 +26,7 @@ export default function Home() {
         clearInterval(countdown);
         setGameStarted(false); // Deactivate the game
         // Handle game timeout or completion if needed
+        setTimer(60);
       }
     }, 1000);
   };
