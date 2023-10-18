@@ -1,35 +1,58 @@
-import React, { useState, useEffect } from "react";
+// Game.js
+import React, { useState, useEffect, useRef } from "react";
 import Table from "../table/Table";
+import "./Game.css";
 
-export default function Game({ timer, randomNums }) {
+export default function Game({ timer, randomNums, onGameCompletion }) {
   const [inputValue, setInputValue] = useState("");
   const [activeAnswerIndex, setActiveAnswerIndex] = useState(0);
-  const [correctAnswer, setCorrectAnswer] = useState(null);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [score, setScore] = useState(0); // Initialize the score state
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (activeAnswerIndex === 0) {
+      inputRef.current.focus();
+    }
+  }, [activeAnswerIndex]);
 
   useEffect(() => {
     if (activeAnswerIndex >= 0 && activeAnswerIndex < randomNums.length) {
       const activeAnswer = randomNums[activeAnswerIndex];
       if (parseInt(inputValue) === activeAnswer.answer) {
-        setCorrectAnswer(parseInt(inputValue));
+        const updatedCorrectAnswers = [...correctAnswers];
+        updatedCorrectAnswers[activeAnswerIndex] = true;
+        setCorrectAnswers(updatedCorrectAnswers);
         setActiveAnswerIndex((prevIndex) =>
           prevIndex < randomNums.length - 1 ? prevIndex + 1 : prevIndex
         );
-        setInputValue(""); // Clear the input for the next answer
+        setInputValue("");
+        setScore((prevScore) => prevScore + 1); // Increment the score when the answer is correct
       }
     }
-  }, [inputValue, randomNums, activeAnswerIndex]);
+  }, [inputValue, randomNums, activeAnswerIndex, correctAnswers]);
+
+  useEffect(() => {
+    if (activeAnswerIndex === randomNums.length) {
+      onGameCompletion(correctAnswers, score); // Pass the correctAnswers and the score to Home.js
+    }
+  }, [activeAnswerIndex, randomNums, onGameCompletion, correctAnswers, score]);
 
   return (
     <div>
       <input
+        className={"active-input"}
         type="number"
         value={inputValue}
         onChange={(event) => setInputValue(event.target.value)}
         placeholder="Enter a number"
+        ref={inputRef}
+        disabled={timer <= 0}
       />
       <Table
         randomNums={randomNums}
-        correctAnswer={correctAnswer}
+        correctAnswers={correctAnswers}
         activeAnswerIndex={activeAnswerIndex}
       />
     </div>
