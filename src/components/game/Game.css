@@ -1,0 +1,5 @@
+/* In your CSS file, e.g., Game.css */
+.active-input {
+    border: 2px solid #007bff; /* Change the border color to indicate focus */
+  }
+  
