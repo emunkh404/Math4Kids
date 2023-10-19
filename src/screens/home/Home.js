@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import generateRandomNumbers from "../../function/generateRandomNumbers";
 import Game from "../../components/game/Game";
+import NavUser from "../../components/nav-user/NavUser";
 
 // const score = 36; // Replace with the actual score
 
@@ -16,6 +17,24 @@ export default function Home() {
     const generatedNumbers = generateRandomNumbers(score);
     setRandomNums(generatedNumbers);
   }, [score]);
+
+  useEffect(() => {
+    let interval;
+
+    if (gameStarted && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000); // Decrease the timer by 1 second every second
+    } else if (timer === 0) {
+      // Handle game over or timer completion here
+      clearInterval(interval);
+      setGameStarted(false);
+    }
+
+    return () => {
+      clearInterval(interval); // Clean up the interval when the component unmounts
+    };
+  }, [gameStarted, timer]);
 
   const handleStartGame = () => {
     setGameStarted(true);
@@ -32,6 +51,7 @@ export default function Home() {
 
   return (
     <div>
+      <NavUser/>
       <p>Time left: {Math.max(timer, 0)} seconds</p>
       <p>SCORE: {score}</p>
       {gameStarted ? (

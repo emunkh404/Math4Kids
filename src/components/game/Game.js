@@ -1,7 +1,7 @@
 // Game.js
 import React, { useState, useEffect, useRef } from "react";
 import Table from "../table/Table";
-import "./Game.css";
+// import "./Game.css";
 
 export default function Game({ timer, randomNums, onGameCompletion }) {
   const [inputValue, setInputValue] = useState("");
