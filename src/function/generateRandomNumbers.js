@@ -1,5 +1,5 @@
 const generateRandomNumbers = (score) => {
-  const maxScore = 50;
+  const maxScore = 30;
   const percentageThreshold = 0.7;
   let numDigits;
 
@@ -20,7 +20,7 @@ const generateRandomNumbers = (score) => {
 
   let result = [];
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 10; i++) {
     const var1 =
       Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
     const var2 =
@@ -30,11 +30,9 @@ const generateRandomNumbers = (score) => {
       var2,
       answer: var1 + var2,
     });
-   
   }
 
   return result;
 };
 
 export default generateRandomNumbers;
-
