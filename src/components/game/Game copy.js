@@ -1,48 +1,61 @@
-import React, { useState, useEffect } from "react";
-import generateRandomNumbers from "../../function/generateRandomNumbers";
+import React, { useState, useEffect, useRef } from "react";
 import Table from "../table/Table";
+import CurrentScore from "../current-score/CurrentScore"
+import GameTimer from "../game-timer/GameTimer"
 
-export default function Game() {
-  const [currentRowIndex, setCurrentRowIndex] = useState(0);
+export default function Game({ timer, randomNums, onGameCompletion }) {
   const [inputValue, setInputValue] = useState("");
-  const [randomNums, setRandomNums] = useState([]);
+  const [activeAnswerIndex, setActiveAnswerIndex] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [score, setScore] = useState(0); // Initialize the score state
+
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    // Generate random numbers when the component mounts
-    const score = 36; // Replace with the actual score
-    const generatedNumbers = generateRandomNumbers(score);
-    setRandomNums(generatedNumbers);
-  }, []);
+    if (activeAnswerIndex === 0) {
+      inputRef.current.focus();
+    }
+  }, [activeAnswerIndex]);
 
-  const [showAnswerCells, setShowAnswerCells] = useState(Array(randomNums.length).fill(false));
-
-  const handleInput = (value) => {
-    setInputValue(value);
-
-    if (value === randomNums[currentRowIndex].answer.toString()) {
-      const updatedShowAnswerCells = [...showAnswerCells];
-      updatedShowAnswerCells[currentRowIndex] = true;
-      setShowAnswerCells(updatedShowAnswerCells);
-
-      if (currentRowIndex < randomNums.length - 1) {
-        setCurrentRowIndex(currentRowIndex + 1);
-        setInputValue(""); // Reset the input value after a correct answer
+  useEffect(() => {
+    if (activeAnswerIndex >= 0 && activeAnswerIndex < randomNums.length) {
+      const activeAnswer = randomNums[activeAnswerIndex];
+      if (parseInt(inputValue) === activeAnswer.answer) {
+        const updatedCorrectAnswers = [...correctAnswers];
+        updatedCorrectAnswers[activeAnswerIndex] = true;
+        setCorrectAnswers(updatedCorrectAnswers);
+        setActiveAnswerIndex((prevIndex) =>
+          prevIndex < randomNums.length - 1 ? prevIndex + 1 : prevIndex
+        );
+        setInputValue("");
+        setScore((prevScore) => prevScore + 1); // Increment the score when the answer is correct
       }
     }
-  };
+  }, [inputValue, randomNums, activeAnswerIndex, correctAnswers]);
+
+  useEffect(() => {
+    if (activeAnswerIndex === randomNums.length) {
+      onGameCompletion(correctAnswers, score); // Pass the correctAnswers and the score to Home.js
+    }
+  }, [activeAnswerIndex, randomNums, onGameCompletion, correctAnswers, score]);
 
   return (
     <div>
+      <GameTimer timer={timer}/>
+      <CurrentScore score={score}/>
       <input
+        className={"active-input"}
         type="number"
         value={inputValue}
-        onChange={(event) => handleInput(event.target.value)}
+        onChange={(event) => setInputValue(event.target.value)}
         placeholder="Enter a number"
+        ref={inputRef}
+        disabled={timer === 0}
       />
       <Table
-        currentRowIndex={currentRowIndex}
-        showAnswerCells={showAnswerCells}
         randomNums={randomNums}
+        correctAnswers={correctAnswers}
+        activeAnswerIndex={activeAnswerIndex}
       />
     </div>
   );
