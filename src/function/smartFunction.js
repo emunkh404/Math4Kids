@@ -1,8 +1,5 @@
 const generateRandomNumbers = (type, level, score) => {
-  const maxScore = 30;
-  const percentageThreshold = 0.7;
-  let numDigits;
-
+  
   switch (type) {
     case "div":
       // Modify the logic to generate var1 % var2 === 0
