@@ -1,7 +1,7 @@
 const generateRandomNumbers = (type, level, score) => {
-  const maxScore = 30;
-  const percentageThreshold = 0.7;
-  let numDigits;
+  // const maxScore = 30;
+  // const percentageThreshold = 0.7;
+  // let numDigits;
 
   switch (type) {
     case "div":
