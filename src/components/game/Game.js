@@ -11,7 +11,7 @@ export default function Game() {
   const [inputValue, setInputValue] = useState("");
   const [activeAnswerIndex, setActiveAnswerIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(300);
   const [gameStarted, setGameStarted] = useState(false);
   const [randomNums, setRandomNums] = useState([]);
   const [type, setType] = useState("add");
@@ -25,7 +25,7 @@ export default function Game() {
   const getLevel = (title) => {
     const levelMap = {
       "Pre-K": "pre-k",
-      Kindergarten: "kinder",
+      "Kindergarten": "kinder",
       "First Grade": "first",
       "Second Grade": "second",
       "Third Grade": "third",
@@ -70,7 +70,7 @@ export default function Game() {
     setInputValue("");
     setActiveAnswerIndex(0);
     setScore(0);
-    setTimer(30);
+    setTimer(300);
     setGameStarted(false);
     setIsOperationSelected(false);
     setRandomNums([]);
@@ -87,11 +87,9 @@ export default function Game() {
     };
     const operationType = operationMapping[selectedOperation] || "add";
     setType(operationType);
-
-    // Instead of calling resetGame, set up a new game here
     setIsOperationSelected(true);
     setRandomNums(generateRandomNumbers(operationType, level, score));
-    setGameStarted(false); // or true, depending on your game logic
+    setGameStarted(false);
   };
 
   const handleStartGame = () => {
@@ -101,70 +99,64 @@ export default function Game() {
 
   return (
     <div className="container mt-4">
-    {/* Centering GameTimer and CurrentScore */}
-    <div className="row justify-content-center my-2">
-      <div className="col-auto mx-2">
-        <GameTimer timer={timer} disabled={score === randomNums.length} />
+      <div className="row justify-content-center my-2">
+        <div className="col-auto mx-2">
+          <GameTimer timer={timer} disabled={score === randomNums.length} />
+        </div>
+        <div className="col-auto mx-2">
+          <CurrentScore score={score} />
+        </div>
       </div>
-      <div className="col-auto mx-2">
-        <CurrentScore score={score} />
+
+      <div className="row justify-content-center my-3">
+        <div className="col-auto">
+          <span className="operation-title me-2 fs-4">{title}:</span>
+          <Operation
+            title={title}
+            onSelect={handleOperationSelect}
+            disabled={isOperationSelected || gameStarted}
+          />
+        </div>
       </div>
-    </div>
-  
-    {/* Centering Operation Component */}
-    <div className="row justify-content-center my-3">
-      <div className="col-auto">
-        <span className="operation-title me-2 fs-4">{title}:</span>
-        <Operation
-          title={title}
-          onSelect={handleOperationSelect}
-          disabled={isOperationSelected || gameStarted}
+
+      <div className="row justify-content-center my-3">
+        <div className="col-md-6 col-lg-4 px-2">
+          <input
+            className="form-control"
+            type="number"
+            value={inputValue}
+            onChange={handleInput}
+            placeholder="Enter a number"
+            ref={inputRef}
+            disabled={timer === 0 || score === randomNums.length}
+          />
+        </div>
+
+        <div className="col-auto px-2">
+          {gameStarted ? (
+            <button className="btn btn-danger" onClick={resetGame}>
+              Reset Game
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={handleStartGame}
+              disabled={!isOperationSelected}
+            >
+              START GAME
+            </button>
+          )}
+        </div>
+      </div>
+
+      {gameStarted && (
+        <Table
+          randomNums={randomNums}
+          activeAnswerIndex={activeAnswerIndex}
+          operationType={type}
+          correctlyAnswered={correctlyAnswered}
         />
-      </div>
+      )}
     </div>
-  
-    {/* Centering Input Field and Start/Reset Game Button */}
-    <div className="row justify-content-center my-3">
-      {/* Input Field */}
-      <div className="col-md-6 col-lg-4 px-2">
-        <input
-          className="form-control"
-          type="number"
-          value={inputValue}
-          onChange={handleInput}
-          placeholder="Enter a number"
-          ref={inputRef}
-          disabled={timer === 0 || score === randomNums.length}
-        />
-      </div>
-      {/* Start/Reset Game Button */}
-      <div className="col-auto px-2">
-        {gameStarted ? (
-          <button className="btn btn-danger" onClick={resetGame}>
-            Reset Game
-          </button>
-        ) : (
-          <button
-            className="btn btn-primary"
-            onClick={handleStartGame}
-            disabled={!isOperationSelected}
-          >
-            START GAME
-          </button>
-        )}
-      </div>
-    </div>
-  
-    {/* Table and GameLevel Components */}
-    {gameStarted && (
-      <Table
-        randomNums={randomNums}
-        activeAnswerIndex={activeAnswerIndex}
-        operationType={type}
-        correctlyAnswered={correctlyAnswered}
-      />
-    )}
-  </div>
-  
   );
 }

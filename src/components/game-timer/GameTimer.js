@@ -1,12 +1,16 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function GameTimer({ timer }) {
+  // Convert total seconds into minutes and seconds
+  const minutes = Math.floor(timer / 60);
+  const seconds = timer % 60;
+
   return (
     <div className="mt-3">
       <h4>Time left: 
         <span className={`badge ${timer <= 10 ? 'bg-danger' : 'bg-secondary'}`}>
-          {Math.max(timer, 0)} seconds
+          {minutes}:{seconds.toString().padStart(2, '0')}
         </span>
       </h4>
     </div>
