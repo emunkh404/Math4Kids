@@ -1,6 +1,6 @@
-
 .active-cell {
   background-color: #0074d9; /* Set your desired background color */
   color: red; /* Set the text color to make it readable */
   font-weight: bold; /* You can make the text bold to emphasize it */
+  border: 2px solid green; /* Add a green border */
 }

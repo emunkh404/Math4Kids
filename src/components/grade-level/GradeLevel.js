@@ -79,27 +79,3 @@ export default function GradeLevel() {
     </div>
   );
 }
-
-// initially level buttons all active
-// initially type buttons all disabled
-
-// if user click one of "Pre-K", "Kindergarten", "First Grade", "Second Grade", buttons
-// disabled other level buttons
-// activate "+", "-",
-// then user click one of "+", "-", buttons
-// disabled other type buttons
-// activate all level buttons
-
-// if user click "Third Grade" button
-// disabled other level buttons
-// activate "+", "-", "*"
-// then user click one of "+", "-", "*" buttons
-// disabled other type buttons
-// activate all level buttons
-
-// if user click "Fourth Grade" buttons
-// disabled other level buttons
-// activate "+", "-", "*", "/"
-// then user click one of "+", "-", "*", "/" buttons
-// disabled other type buttons
-// activate all level buttons

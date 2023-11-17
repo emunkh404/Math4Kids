@@ -10,7 +10,7 @@ export default function Login() {
   return (
     <div>
       Login
-      <button onClick={() => handleNavigate("/home")}>Home</button>
+      <button onClick={() => handleNavigate("/")}>Home</button>
       <button onClick={() => handleNavigate("/statistics")}>Statistics</button>
       <button onClick={() => handleNavigate("/contact")}>Contact</button>
     </div>

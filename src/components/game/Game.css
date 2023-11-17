@@ -2,4 +2,9 @@
 .active-input {
     border: 2px solid #007bff; /* Change the border color to indicate focus */
   }
+  .operation-title {
+    font-weight: bold;
+    font-size: 1.2rem; /* Adjust as needed */
+    /* Additional styling can be added here */
+  }
   

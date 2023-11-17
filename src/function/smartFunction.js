@@ -1,124 +1,73 @@
-const generateRandomNumbers = (type, level, score) => {
-  
-  switch (type) {
-    case "div":
-      // Modify the logic to generate var1 % var2 === 0
-      return generateDivisionNumbers(level, score);
+const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-    case "sub":
-      // Modify the logic to generate var1 > var2
-      return generateSubtractionNumbers(level, score);
-
-    case "mul":
-      // Add your logic for the "mul" case here
-      return generateMultiplicationNumbers(level, score);
-
-    default:
-      // Add your logic for the default case (add math) here
-      return generateAdditionNumbers(level, score);
-  }
+const getMaxNumber = (level) => {
+  const levelMaxNumbers = {
+    "pre-k": 10, "kinder": 10,
+    "first": 20, "second": 20,
+    "third": 50, "fourth": 50
+  };
+  return levelMaxNumbers[level] || 10;
 };
 
-// Helper function to generate division numbers
-function generateDivisionNumbers(level, score) {
-  // Implement logic to generate var1 % var2 === 0
-  // ...
-}
-
-// Helper function to generate subtraction numbers
-function generateSubtractionNumbers(level, score) {
-  // Implement logic to generate var1 > var2
-  // ...
-}
-
-// Helper function to generate multiplication numbers
-function generateMultiplicationNumbers(level, score) {
-  // Implement logic for the "mul" case
-  // ...
-}
-
-// Helper function to generate addition numbers (default case)
-function generateAdditionNumbers(level, score) {
+const getNumDigits = (level, score) => {
   const maxScore = 10;
-  const percentageThreshold = 0.7;
-  let numDigits;
+  const percentageThreshold = 0.8;
+  let baseDigits = level === 'third' || level === 'fourth' ? 2 : 1;
+  let additionalDigits = score >= percentageThreshold * maxScore 
+    ? Math.floor((score - percentageThreshold * maxScore) / 5)
+    : 0;
+  return Math.min(baseDigits + additionalDigits, 7);
+};
 
-  switch (level) {
-    case "pre-k":
-      numDigits = 1;
-      break;
-
-    case "kinder":
-      numDigits = 1;
-      break;
-
-    case "first":
-      if (score < percentageThreshold * maxScore) {
-        numDigits = 1;
-      } else {
-        numDigits =
-          1 + Math.floor((score - percentageThreshold * maxScore) / 5);
-      }
-      break;
-
-    case "second":
-      if (score < percentageThreshold * maxScore) {
-        numDigits = 1;
-      } else {
-        numDigits =
-          1 + Math.floor((score - percentageThreshold * maxScore) / 5);
-      }
-      break;
-
-    case "third":
-      if (score < percentageThreshold * maxScore) {
-        numDigits = 2;
-      } else {
-        numDigits =
-          1 + Math.floor((score - percentageThreshold * maxScore) / 5);
-      }
-      break;
-
-    case "fourth":
-      if (score < percentageThreshold * maxScore) {
-        numDigits = 2;
-      } else {
-        numDigits =
-          1 + Math.floor((score - percentageThreshold * maxScore) / 5);
-      }
-      break;
-
-    default:
-      // Default to one-digit addition if the level is not recognized
-      numDigits = 1;
-      break;
-  }
-
-  // Ensure that numDigits doesn't exceed 7 filtered to a maximum of 7 digits
-  numDigits = Math.min(numDigits, 7);
-
-  // Generate a random number with the specified number of digits
-  const minNumber = Math.pow(10, numDigits - 1);
-  const maxNumber = Math.pow(10, numDigits) - 1;
-
+const generateOperationNumbers = (operation, level, score) => {  
   let result = [];
+  let maxNumber = getMaxNumber(level);
+  let numDigits = getNumDigits(level, score);
+  let minNumber = Math.pow(10, numDigits - 1);
+  let maxDigitNumber = Math.pow(10, numDigits) - 1;
 
-  for (let i = 0; i < 10; i++) {
-    const var1 =
-      Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-    const var2 =
-      Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-    result.push({
-      var1,
-      var2,
-      answer: var1 + var2,
-    });
+  for (let i = 0; i < 30; i++) {
+    let var1, var2, answer;
+    switch (operation) {
+      case 'div':
+        var2 = getRandomNumber(1, maxNumber);
+        var1 = var2 * getRandomNumber(1, maxNumber);
+        answer = var1 / var2;
+        break;
+      case 'sub':
+        var1 = getRandomNumber(1, maxNumber);
+        var2 = getRandomNumber(0, var1);
+        answer = var1 - var2;
+        break;
+      case 'mul':
+        var1 = getRandomNumber(1, maxNumber);
+        var2 = getRandomNumber(1, maxNumber);
+        answer = var1 * var2;   
+        break;     
+      case 'add':
+        var1 = getRandomNumber(minNumber, maxDigitNumber);
+        var2 = getRandomNumber(minNumber, maxDigitNumber);
+        answer = var1 + var2;
+        break;        
+      default:        
+        console.log("Invalid operation type");
+        break;
+    }
+    result.push({ var1, var2, answer });
   }
 
   return result;
-}
+};
 
-// const score = 0; // Replace with the actual score from DB
+const generateRandomNumbers = (type, level, score) => {
+  return generateOperationNumbers(type, level, score);
+};
+
+
+// Example usage
+// const score = 0; // Replace with actual score from DB
 // const level = "fourth";
-// console.log(generateAdditionNumbers(level, score));
+// const type = "add";
+// console.log(generateRandomNumbers(type, level, score));
+
 export default generateRandomNumbers;

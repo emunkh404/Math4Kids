@@ -1,17 +1,27 @@
 import React from "react";
-import Game from "../../components/game/Game";
 import NavUser from "../../components/nav-user/NavUser";
-import GradeLevel from "../../components/grade-level/GradeLevel";
-
-const level = "second"; // from Grade-level
-const type = "add"; // from Grade-level
+import GradeChoose from "../../components/grade-choose/GradeChoose";
+import InfoNav from "../../components/info-nav/InfoNav";
+import Testimonial from "../../components/testimonial/Testimonial";
+import Carousels from "../../components/carousels/Carousels";
+import AccordionInfo from "../../components/accordion-info/AccordionInfo";
+import './Home.css'; 
+import Footer from "../../components/footer/Footer";
 
 export default function Home() {
   return (
-    <div>
+    <div className="home-container">
       <NavUser />
-      <GradeLevel />
-      <Game level={level} type={type}/>
+      <InfoNav />
+      <Carousels />
+
+      <div className="inner-container">
+        <AccordionInfo className="section" />
+        <GradeChoose className="section" />
+        <Testimonial />
+      </div>
+
+      <Footer/>
     </div>
   );
 }
