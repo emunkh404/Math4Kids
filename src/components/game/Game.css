@@ -1,10 +1,14 @@
 /* In your CSS file, e.g., Game.css */
 .active-input {
-    border: 2px solid #007bff; /* Change the border color to indicate focus */
-  }
-  .operation-title {
-    font-weight: bold;
-    font-size: 1.2rem; /* Adjust as needed */
-    /* Additional styling can be added here */
-  }
-  
+  border: 2px solid #007bff; /* Change the border color to indicate focus */
+}
+.operation-title {
+  font-weight: bold;
+  font-size: 1.2rem; /* Adjust as needed */
+  /* Additional styling can be added here */
+}
+.btn-secondary-gray:disabled {
+  background-color: #6c757d; /* Gray color */
+  border-color: #6c757d;
+}
+

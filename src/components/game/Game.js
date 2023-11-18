@@ -6,6 +6,9 @@ import Operation from "../operation/Operation";
 import generateRandomNumbers from "../../function/smartFunction";
 import { useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import Button from 'react-bootstrap/Button';
 
 export default function Game() {
   const [inputValue, setInputValue] = useState("");
@@ -17,6 +20,7 @@ export default function Game() {
   const [type, setType] = useState("add");
   const [correctlyAnswered, setCorrectlyAnswered] = useState(new Set());
   const [isOperationSelected, setIsOperationSelected] = useState(false);
+  const [isInputFixed, setIsInputFixed] = useState(false);
 
   const inputRef = useRef(null);
   const location = useLocation();
@@ -35,6 +39,17 @@ export default function Game() {
   };
 
   const level = getLevel(title);
+  // Scroll event handler
+  useEffect(() => {
+    const handleScroll = () => {
+      const shouldFixInput = window.scrollY > 100; // You can adjust this value
+      setIsInputFixed(shouldFixInput);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (activeAnswerIndex === 0 && inputRef.current) {
@@ -119,35 +134,40 @@ export default function Game() {
         </div>
       </div>
 
-      <div className="row justify-content-center my-3">
-        <div className="col-md-6 col-lg-4 px-2">
-          <input
-            className="form-control"
-            type="number"
-            value={inputValue}
-            onChange={handleInput}
-            placeholder="Enter a number"
-            ref={inputRef}
-            disabled={timer === 0 || score === randomNums.length}
-          />
-        </div>
-
-        <div className="col-auto px-2">
-          {gameStarted ? (
-            <button className="btn btn-danger" onClick={resetGame}>
-              Reset Game
-            </button>
-          ) : (
-            <button
-              className="btn btn-primary"
-              onClick={handleStartGame}
-              disabled={!isOperationSelected}
-            >
-              START GAME
-            </button>
-          )}
+    {/* Input and Buttons Panel */}
+    <div className={`input-buttons-panel ${isInputFixed ? 'fixed-top' : ''}`}>
+      <div className="container">
+        <div className="row justify-content-center my-3">
+          <div className="col-12 col-sm-8 col-md-6 col-lg-4 px-2">
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Enter a number"
+                type="number"
+                value={inputValue}
+                onChange={handleInput}
+                ref={inputRef}
+                disabled={timer === 0 || score === randomNums.length}
+              />
+              {gameStarted ? (
+                <Button variant="danger" onClick={resetGame}>
+                  Reset Game
+                </Button>
+              ) : (
+                <Button 
+                  variant="outline-primary" 
+                  onClick={handleStartGame}
+                  disabled={!isOperationSelected}
+                  className="btn-secondary-gray"
+                >
+                  START GAME
+                </Button>
+              )}
+            </InputGroup>
+          </div>
         </div>
       </div>
+    </div>
+
 
       {gameStarted && (
         <Table
