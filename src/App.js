@@ -6,6 +6,7 @@ import Statistics from "./screens/statistics/Statistics";
 import Contact from "./screens/contact/Contact";
 import NoPage from "./screens/nopage/NoPage";
 import Game from "./components/game/Game";
+import FlashCards from "./components/flash-card/FlashCards";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/*" element={<NoPage />} />
+          <Route path="/flashcard-mul" element={<FlashCards/>}/>
         </Routes>
       </BrowserRouter>
     </div>
