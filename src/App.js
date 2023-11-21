@@ -20,7 +20,7 @@ function App() {
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/*" element={<NoPage />} />
-          <Route path="/flashcard-mul" element={<FlashCards/>}/>
+          <Route path="/flashcard" element={<FlashCards/>}/>
         </Routes>
       </BrowserRouter>
     </div>
