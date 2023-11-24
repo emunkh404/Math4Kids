@@ -13,7 +13,7 @@ export default function Login() {
       <button onClick={() => handleNavigate("/")}>Home</button>
       <button onClick={() => handleNavigate("/statistics")}>Statistics</button>
       <button onClick={() => handleNavigate("/contact")}>Contact</button>
-      <button onClick={() => handleNavigate("/flashcard")}>FlashCard</button>
+      <button onClick={() => handleNavigate("/flash-mul")}>FlashCard</button>
     </div>
   );
 }

@@ -1,54 +1,96 @@
-import React from 'react';
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar, Nav, Form, FormControl, Button, Container } from 'react-bootstrap';
+import {
+  Navbar,
+  Nav,
+  Form,
+  FormControl,
+  Button,
+  Container,
+  Alert,
+} from "react-bootstrap";
+import { UserContext } from "../../contexts/user-context/UserContext";
 
 export default function NavUser() {
   const navigate = useNavigate();
-  const handleNavigate = (path) => {
-    navigate(path);
+  const { loginUser, logout } = useContext(UserContext);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+    setError("");
+    try {
+      await loginUser(username, password);
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+      setError("Login failed: Invalid username or password.");
+    }
   };
+
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem("userId");
+    navigate("/");
+  };
+
+  const isLoginDisabled = !username || !password;
+  const userId = localStorage.getItem("userId");
+
   return (
-    <Navbar bg="warning" expand="lg" >
+    <Navbar bg="warning" expand="lg">
       <Container fluid>
-        {/* Logo on the left */}
         <Navbar.Brand href="#">
           <img
-            src="/images/M4JEM.png" // Replace with your logo path
+            src="/images/M4JEM.png"
             width="30"
             height="30"
             className="d-inline-block align-top"
             alt="Logo"
           />
         </Navbar.Brand>
-
         <Navbar.Toggle aria-controls="navbarScroll" />
-
         <Navbar.Collapse id="navbarScroll">
-          {/* Existing Nav Links */}
           <Nav
             className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
+            style={{ maxHeight: "100px" }}
             navbarScroll
-          >
-            {/* ... your Nav.Link and NavDropdown items */}
-          </Nav>
-
-          {/* User and Password form on the right */}
-          <Form className="d-flex">
-            <FormControl
-              type="text"
-              placeholder="Username"
-              className="me-2"
-              aria-label="Username"
-            />
-            <FormControl
-              type="password"
-              placeholder="Password"
-              className="me-2"
-              aria-label="Password"
-            />
-            <Button onClick={() => handleNavigate("/login")} variant="outline-success">Login</Button>
-          </Form>
+          ></Nav>
+          {userId ? (
+            <Button onClick={handleLogout} variant="outline-danger">
+              Logout
+            </Button>
+          ) : (
+            <>
+              {error && <Alert variant="danger">{error}</Alert>}
+              <Form className="d-flex">
+                <FormControl
+                  type="text"
+                  placeholder="Email"
+                  className="me-2"
+                  aria-label="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <FormControl
+                  type="password"
+                  placeholder="Password"
+                  className="me-2"
+                  aria-label="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button
+                  onClick={handleLogin}
+                  variant="outline-success"
+                  disabled={isLoginDisabled}
+                >
+                  Login
+                </Button>
+              </Form>
+            </>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

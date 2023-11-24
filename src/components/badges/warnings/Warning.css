@@ -1,0 +1,32 @@
+/* Warning.css */
+.container {
+  position: relative;
+  z-index: 1; /* Ensure the container is positioned in the stacking context */
+}
+
+.popUpBadge {
+  position: absolute;
+  top: 50%; /* Adjust as needed */
+  left: 50%; /* Adjust as needed */
+  transform: translate(-50%, -50%); /* Center the badge */
+  z-index: 99; /* High z-index to ensure it's on top */
+}
+
+@keyframes popUpAndOut {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5) translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
+
+.popUpAndOut {
+  animation: popUpAndOut 1s ease-in-out;
+}

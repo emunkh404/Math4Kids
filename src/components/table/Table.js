@@ -56,7 +56,7 @@ function Table({
                     <td>
                       {correctlyAnswered.has(groupIndex * 10 + rowIndex)
                         ? row.answer
-                        : ""}
+                        : "="}
                     </td>
                   </tr>
                 ))}
