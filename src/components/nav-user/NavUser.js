@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Navbar,
   Nav,
@@ -12,7 +11,7 @@ import {
 import { UserContext } from "../../contexts/user-context/UserContext";
 
 export default function NavUser() {
-  const navigate = useNavigate();
+ 
   const { loginUser, logout } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,8 +20,7 @@ export default function NavUser() {
   const handleLogin = async () => {
     setError("");
     try {
-      await loginUser(username, password);
-      navigate("/home");
+      await loginUser(username, password);      
     } catch (error) {
       console.error("Login failed:", error);
       setError("Login failed: Invalid username or password.");
@@ -31,8 +29,6 @@ export default function NavUser() {
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem("userId");
-    navigate("/");
   };
 
   const isLoginDisabled = !username || !password;

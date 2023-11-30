@@ -1,4 +1,3 @@
-/* Warning.css */
 .container {
   position: relative;
   z-index: 1; /* Ensure the container is positioned in the stacking context */

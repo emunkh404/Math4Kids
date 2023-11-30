@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import { Badge } from 'react-bootstrap';
-import './Warning.css'; // Import your animations stylesheet
+import './Warning.css';
 
 export default function Warning({ score }) {
   const [showBadge, setShowBadge] = useState(false);
@@ -18,7 +18,7 @@ export default function Warning({ score }) {
   useEffect(() => {
     if (score % 5 === 0 && score !== 0) {
       setShowBadge(true);
-      setTimeout(() => setShowBadge(false), 1000); // Hide after 1 second
+      setTimeout(() => setShowBadge(false), 1000);
     }
   }, [score]);
 

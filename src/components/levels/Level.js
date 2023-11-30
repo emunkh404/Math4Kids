@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Badge } from 'react-bootstrap';
 
-export default function Level({level}) {
+export default function Level({ level }) {
   return (
-    <span>
-      level-{level}
-    </span>
-  )
+    <Badge bg="primary" text="light">
+      Level {level}
+    </Badge>
+  );
 }

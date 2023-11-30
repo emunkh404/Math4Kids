@@ -13,6 +13,8 @@ import InfoNav from "../info-nav/InfoNav";
 import Level from "../levels/Level";
 import Warning from "../badges/warnings/Warning";
 import NavUser from "../nav-user/NavUser";
+import State from "../states/State";
+import InfoAlert from "../alert/InfoAlert";
 
 export default function Game() {
   const [inputValue, setInputValue] = useState("");
@@ -26,6 +28,7 @@ export default function Game() {
   const [isOperationSelected, setIsOperationSelected] = useState(false);
   const [isInputFixed, setIsInputFixed] = useState(false);
   const [level, setLevel] = useState(1);
+  const [shouldSave, setShouldSave] = useState(false);
 
   const inputRef = useRef(null);
   const location = useLocation();
@@ -34,7 +37,7 @@ export default function Game() {
   const getLevel = (title) => {
     const levelMap = {
       "Pre-K": "pre-k",
-      Kindergarten: "kinder",
+      "Kindergarten": "kinder",
       "First Grade": "first",
       "Second Grade": "second",
       "Third Grade": "third",
@@ -64,6 +67,7 @@ export default function Game() {
 
   useEffect(() => {
     if (!gameStarted || timer === 0 || score === randomNums.length) {
+      setShouldSave(true);
       return;
     }
     const interval = setInterval(() => {
@@ -144,10 +148,11 @@ export default function Game() {
 
   return (
     <>
-    <NavUser/>
+      <NavUser />
       <InfoNav />
-      <span className="operation-title me-2 fs-4">
-        {title} : <Level level={level} />
+      <span className="operation-title me-2 fs-4 d-flex justify-content-center align-items-center">
+        <strong>{title}: </strong> <Level level={level} />~
+        <State score={score} problems={randomNums.length} />
       </span>
       <div className="row justify-content-center my-3">
         <div className="col-auto">
@@ -168,7 +173,6 @@ export default function Game() {
               <GameTimer timer={timer} disabled={score === randomNums.length} />
             </div>
             <div className="col-auto mx-2">
-              {" "}
               {/* Wrap Warning in a div with col-auto */}
               <Warning score={score} />
             </div>
@@ -208,21 +212,27 @@ export default function Game() {
           </div>
         </div>
         {gameStarted && (
-  <div className="container mt-4">
-    <div className="row justify-content-center">
-      <div className="col">
-        <Table
-          randomNums={randomNums}
-          activeAnswerIndex={activeAnswerIndex}
-          operationType={type}
-          correctlyAnswered={correctlyAnswered}
-        />
-      </div>
-    </div>
-  </div>
-)}
-
-
+          <div className="container mt-4">
+            <div className="row justify-content-center">
+              <div className="col">
+                <Table
+                  randomNums={randomNums}
+                  activeAnswerIndex={activeAnswerIndex}
+                  operationType={type}
+                  correctlyAnswered={correctlyAnswered}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        <InfoAlert
+        level={level}
+        rate={score / (randomNums.length || 1) * 100}
+        time={300 - timer}
+        localDate={new Date().toLocaleDateString()}
+        localTime={new Date().toLocaleTimeString()}
+        saveTrigger={shouldSave}
+      />
       </div>
     </>
   );

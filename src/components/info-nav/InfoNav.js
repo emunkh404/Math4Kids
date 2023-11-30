@@ -22,6 +22,7 @@ export default function InfoNav() {
               <Nav.Link onClick={() => handleNavigate('/')}>Home</Nav.Link>
               <Nav.Link onClick={() => handleNavigate('/sign-up')}>Sign Up</Nav.Link>
               <Nav.Link onClick={() => handleNavigate('/flash-mul')}>FlashCard</Nav.Link>
+              <Nav.Link onClick={() => handleNavigate('/states')}>Statistics</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

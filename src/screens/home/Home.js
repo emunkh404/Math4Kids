@@ -5,7 +5,7 @@ import InfoNav from "../../components/info-nav/InfoNav";
 import Testimonial from "../../components/testimonial/Testimonial";
 import Carousels from "../../components/carousels/Carousels";
 import AccordionInfo from "../../components/accordion-info/AccordionInfo";
-import './Home.css'; 
+import "./Home.css";
 import Footer from "../../components/footer/Footer";
 
 export default function Home() {
@@ -16,12 +16,13 @@ export default function Home() {
       <Carousels />
 
       <div className="inner-container">
-        <AccordionInfo className="section" />
-        <GradeChoose className="section" />
+        <AccordionInfo />
+        <br />
+        <GradeChoose />
         <Testimonial />
       </div>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import FlashCard from './FlashCard';
+import NavUser from '../nav-user/NavUser';
+import InfoNav from '../info-nav/InfoNav';
 
 const generateQuestion = () => {
     const num1 = Math.floor(Math.random() * 8) + 2; // 2 through 9
@@ -41,6 +43,9 @@ export default function FlashCards() {
     };
 
     return (
+        <>
+        <NavUser/>
+        <InfoNav/>
         <div className="container mt-4">
             <FlashCard 
                 question={currentQuestion.question} 
@@ -53,5 +58,6 @@ export default function FlashCards() {
                 <p>Diamonds: {'♦'.repeat(diamonds)}</p>
             </div>
         </div>
+        </>
     );
 }
