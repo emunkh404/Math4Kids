@@ -1,5 +1,6 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
+import "./Carousels.css";
 
 export default function Carousels() {
   return (
@@ -12,8 +13,8 @@ export default function Carousels() {
             alt="First slide"
           />
           <Carousel.Caption>
-            <h3>Welcome to Math Explorers!</h3>
-            <p>
+            <h3 className="carousel-title">Welcome to Math Explorers!</h3>
+            <p className="carousel-text">
               Join us on a fun-filled journey through the world of numbers and
               shapes, where every math problem is an adventure!
             </p>
@@ -26,8 +27,8 @@ export default function Carousels() {
             alt="Second slide"
           />
           <Carousel.Caption>
-            <h3>Math Magic Kingdom!</h3>
-            <p>
+          <h3 className="carousel-title">Math Magic Kingdom!</h3>
+          <p className="carousel-text">
               Step into a magical world where numbers are your friends and every
               math puzzle is a spell waiting to be solved!
             </p>
@@ -40,8 +41,8 @@ export default function Carousels() {
             alt="Third slide"
           />
           <Carousel.Caption>
-            <h3>Shapes and Numbers Safari!</h3>
-            <p>
+          <h3 className="carousel-title">Shapes and Numbers Safari!</h3>
+          <p className="carousel-text">
               Embark on an exciting safari adventure where we discover the
               secrets of shapes and have fun with numbers in the wild!
             </p>

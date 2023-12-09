@@ -21,7 +21,7 @@ Feel free to reach out to me directly at <strong>m.erdene404@gmail.com</strong>.
 
 Thank you for your support and contribution to making our web app better. We can't wait to hear your thoughts!
 
-Best regards, <strong>Mike Erdene</strong>
+Best regards, <a href="https://www.mikeportfolio.click/"><strong>Mike Erdene</strong></a>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">

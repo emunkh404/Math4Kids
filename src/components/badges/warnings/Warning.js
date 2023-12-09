@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from 'react';
-import { Badge } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
 import './Warning.css';
 
 export default function Warning({ score }) {
@@ -11,8 +11,8 @@ export default function Warning({ score }) {
   ];
 
   const getEncouragementWord = () => {
-    const index = Math.floor(score / 5) % encouragementWords.length;
-    return encouragementWords[index];
+    const randomIndex = Math.floor(Math.random() * encouragementWords.length);
+    return encouragementWords[randomIndex];
   };
 
   useEffect(() => {
@@ -27,9 +27,9 @@ export default function Warning({ score }) {
   return (
     <div className="container">
       {showBadge && (
-        <Badge pill bg="info" className="popUpBadge popUpAndOut">
+        <Alert className="popUpBadge popUpAndOut">
           {wordToShow}
-        </Badge>
+        </Alert>
       )}
     </div>
   );

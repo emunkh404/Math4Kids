@@ -24,11 +24,11 @@ export default function GradeLevel() {
       level === "First Grade" ||
       level === "Second Grade"
     ) {
-      setActiveType(types[0], types[1]); // Enable "+", "-"
+      setActiveType(types[0], types[1]); 
     } else if (level === "Third Grade") {
-      setActiveType(types[0], types[1], types[2]); // Enable "+", "-", "*"
+      setActiveType(types[0], types[1], types[2]);
     } else {
-      setActiveType(""); // Reset activeType
+      setActiveType("");
     }
   };
 

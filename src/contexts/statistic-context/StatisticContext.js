@@ -4,34 +4,44 @@ import axios from '../../screens/axios-states';
 export const StatisticContext = createContext();
 
 const StatisticStore = ({children}) => {
-
     const [state, setState]=useState({})
     const [states, setStates]=useState({})
 
-    const saveState = async (token, newState) => {
+    const saveState = async (newState) => {
         setState({ ...state, saving: true });
         try {
-            const response = await axios.post(`states.json?auth=${token}`, newState);
+            const response = await axios.post(`states.json`, newState);
             setState({ ...state, saving: false, finished: true, error: null });
-            return response; // Resolves the promise with the response
+            return response;
         } catch (error) {
             setState({ ...state, saving: false, finished: true, error });
-            return Promise.reject(error); // Rejects the promise with the error
+            return Promise.reject(error);
         }
     };
     
-    const loadStates = (userId, token) => {       
+    const loadStates = async (userId) => {
         setStates({ ...states, loading: true });
+        try {
+            const response = await axios.get(`states.json`);
+            const allStates = response.data;
+            const userStates = [];
     
-        axios
-          .get(`states.json?&auth=${token}&orderBy="userId"&equalTo="${userId}"`)
-          .then((response) => {
-            const loadedStates = Object.entries(response.data).reverse();
-            setStates({ ...states, states: loadedStates });
-          })
-          .catch((err) => setStates({ ...states, error: err }));
-      };
-
+            // Filter states based on userId
+            for (let key in allStates) {
+                if (allStates[key].userId === userId) {
+                    userStates.push(allStates[key]);
+                }
+            }
+    
+            setStates({ ...states, states: userStates, loading: false });
+            return userStates;
+        } catch (error) {
+            setStates({ ...states, error: error, loading: false });
+            console.error("Error loading states:", error);
+            return Promise.reject(error);
+        }
+    };
+    
     return (
         <StatisticContext.Provider value={{saveState, loadStates}}>
             {children}

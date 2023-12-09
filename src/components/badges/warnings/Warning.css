@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  z-index: 1; /* Ensure the container is positioned in the stacking context */
+  z-index: 10; /* Ensure the container is positioned in the stacking context */
 }
 
 .popUpBadge {
