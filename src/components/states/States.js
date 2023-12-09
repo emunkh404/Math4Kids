@@ -7,10 +7,12 @@ import { StatisticContext } from "../../contexts/statistic-context/StatisticCont
 export default function States() {
   const { loadStates } = useContext(StatisticContext);
   const [loadedStates, setLoadedStates] = useState([]);
+  const [userIdExists, setUserIdExists] = useState(false);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
+      setUserIdExists(true);
       loadStates(userId)
         .then((fetchedStates) => {
           setLoadedStates(fetchedStates);
@@ -87,7 +89,9 @@ export default function States() {
       <Container className="mt-4">
         <h2 className="mb-3">Statistic</h2>
         <Row>
-          {loadedStates.map((state, index) => (
+        {userIdExists ? (
+            loadedStates.length > 0 ? (
+              loadedStates.map((state, index) => (
             <Col key={index} md={6} lg={4} className="mb-4">
               <Card>
                 <Card.Body>
@@ -111,7 +115,17 @@ export default function States() {
                 </Card.Body>
               </Card>
             </Col>
-          ))}
+          ))
+          ) : (
+            <Col>
+              <p>You don't have any record or something is wrong.</p>
+            </Col>
+          )
+        ) : (
+          <Col>
+            <p>You need to login or signup for your record to be saved.</p>
+          </Col>
+        )}
         </Row>
       </Container>
     </>
