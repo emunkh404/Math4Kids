@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import './Operation.css'; // Assuming you have a CSS file for custom styles
+import './Operation.css';
 
 const Operation = ({ title, onSelect, disabled }) => {
   const getOperations = () => {
@@ -16,6 +16,8 @@ const Operation = ({ title, onSelect, disabled }) => {
   const operations = getOperations();
 
   const buttonVariant = (op) => {
+    if(disabled) return 'secondary'; // Set to secondary if disabled
+
     switch(op) {
       case '+': return 'success';
       case '-': return 'warning';
@@ -33,7 +35,7 @@ const Operation = ({ title, onSelect, disabled }) => {
           variant={buttonVariant(op)}
           onClick={() => onSelect(op)}
           disabled={disabled}
-          className="operation-button mx-2" // Custom class for additional styling
+          className="operation-button mx-2"
         >
           {op}
         </Button>

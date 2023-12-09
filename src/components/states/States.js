@@ -82,18 +82,17 @@ export default function States() {
   };
 
   return (
-    <>
+    <div>
       <NavUser />
       <InfoNav />
 
       <Container className="mt-4">
-        <h2 className="mb-3">Statistic</h2>
-        <Row>
-        {userIdExists ? (
-            loadedStates.length > 0 ? (
-              loadedStates.map((state, index) => (
-            <Col key={index} md={6} lg={4} className="mb-4">
-              <Card>
+      {userIdExists ? (
+        loadedStates.length > 0 ? (
+          <Row className="justify-content-center">
+            {loadedStates.map((state, index) => (
+              <Col key={index} md={6} lg={4} className="mb-4">
+                <Card>
                 <Card.Body>
                   <Card.Title>
                     Level-{state.level}:{" "}
@@ -115,19 +114,24 @@ export default function States() {
                 </Card.Body>
               </Card>
             </Col>
-          ))
+          ))}
+          </Row>
           ) : (
-            <Col>
+            <Row className="justify-content-center">
+            <Col xs={12} className="text-center">
               <p>You don't have any record or something is wrong.</p>
             </Col>
+            </Row>
           )
         ) : (
-          <Col>
+          <Row className="justify-content-center">
+          <Col xs={12} className="text-center">
             <p>You need to login or signup for your record to be saved.</p>
-          </Col>
+            </Col>
+            </Row>
         )}
-        </Row>
+     
       </Container>
-    </>
+    </div>
   );
 }

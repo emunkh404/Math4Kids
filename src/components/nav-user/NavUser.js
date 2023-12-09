@@ -9,9 +9,9 @@ import {
   Alert,
 } from "react-bootstrap";
 import { UserContext } from "../../contexts/user-context/UserContext";
+import "./NavUser.css"; // Import custom CSS for styling
 
 export default function NavUser() {
- 
   const { loginUser, logout } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +20,7 @@ export default function NavUser() {
   const handleLogin = async () => {
     setError("");
     try {
-      await loginUser(username, password);      
+      await loginUser(username, password);
     } catch (error) {
       console.error("Login failed:", error);
       setError("Login failed: Invalid username or password.");
@@ -42,17 +42,21 @@ export default function NavUser() {
             src="/images/M4JEM.png"
             width="30"
             height="30"
-            className="d-inline-block align-top"
+            className="d-inline-block align-top logo-pill"
             alt="Logo"
           />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Toggle aria-controls="navbarScroll">
+          🎂 {/* Birthday cake emoji as the toggle icon */}
+        </Navbar.Toggle>
         <Navbar.Collapse id="navbarScroll">
           <Nav
             className="me-auto my-2 my-lg-0"
             style={{ maxHeight: "100px" }}
             navbarScroll
-          ></Nav>
+          >
+            {/* Add Nav.Link items here if needed */}
+          </Nav>
           {userId ? (
             <Button onClick={handleLogout} variant="outline-danger">
               Logout

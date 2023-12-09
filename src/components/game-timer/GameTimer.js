@@ -1,8 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function GameTimer({ timer }) {
-  // Convert total seconds into minutes and seconds
+export default function GameTimer({ timer }) {  
   const minutes = Math.floor(timer / 60);
   const seconds = timer % 60;
 

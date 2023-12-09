@@ -198,7 +198,7 @@ export default function Game() {
       <NavUser />
       <InfoNav />
       <span className="operation-title me-2 fs-4 d-flex justify-content-center align-items-center">
-        <strong>{title}: </strong> <Level level={level} />~
+        <strong>{title}: </strong> <Level level={level} />_
         <State score={score} problems={randomNums.length} />
       </span>
       <div className="row justify-content-center my-3">
@@ -210,69 +210,67 @@ export default function Game() {
           />
         </div>
       </div>
-      <div className="container mt-4">
-        <div
-          className={`input-buttons-panel ${isInputFixed ? "fixed-top" : ""}`}
-        >
-          <div className="row justify-content-center my-2">
-            <div className="col-auto mx-2">
-              <GameTimer timer={timer} disabled={score === randomNums.length} />
-            </div>
-            <div >
-              <Warning score={score} />
-            </div>
-            <div className="col-auto mx-2">
-              <CurrentScore score={score} />
-            </div>
+      <div
+        className={`container mt-4 input-buttons-panel ${
+          isInputFixed ? "fixed-top" : ""
+        }`}
+      >
+        <div className="row justify-content-center my-2 bg-white">
+          <div className="col-auto mx-2">
+            <GameTimer timer={timer} disabled={score === randomNums.length} />
           </div>
-          <div className="container">
-            <div className="row justify-content-center my-3">
-              <div className="col-12 col-sm-8 col-md-6 col-lg-4 px-2">
-                <InputGroup className="mb-3">
-                  <FormControl
-                    placeholder="Enter a number"
-                    type="number"
-                    value={inputValue}
-                    onChange={handleInput}
-                    ref={inputRef}
-                    disabled={timer === 0 || score === randomNums.length}
-                  />
-                  {gameStarted ? (
-                    <Button variant="danger" onClick={resetGame}>
-                      Reset Game
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline-primary"
-                      onClick={handleStartGame}
-                      disabled={!isOperationSelected}
-                      className="btn-secondary-gray"
-                    >
-                      START GAME
-                    </Button>
-                  )}
-                </InputGroup>
-              </div>
+          <div className="col-auto mx-2">
+            <Warning score={score} />
+          </div>
+          <div className="col-auto mx-2">
+            <CurrentScore score={score} />
+          </div>
+        </div>
+        <div className="row justify-content-center my-3">
+          <div className="col-12 col-sm-8 col-md-6 col-lg-4 px-2">
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Enter a number"
+                type="number"
+                value={inputValue}
+                onChange={handleInput}
+                ref={inputRef}
+                disabled={timer === 0 || score === randomNums.length}
+              />
+              {gameStarted ? (
+                <Button variant="danger" onClick={resetGame}>
+                  Reset Game
+                </Button>
+              ) : (
+                <Button
+                  variant="outline-primary"
+                  onClick={handleStartGame}
+                  disabled={!isOperationSelected}
+                  className="btn-secondary-gray"
+                >
+                  START GAME
+                </Button>
+              )}
+            </InputGroup>
+          </div>
+        </div>
+      </div>
+      {gameStarted && (
+        <div className="container mt-4">
+          <div className="row justify-content-center">
+            <div className="col">
+              <Table
+                randomNums={randomNums}
+                activeAnswerIndex={activeAnswerIndex}
+                operationType={type}
+                correctlyAnswered={correctlyAnswered}
+                activeCellRef={activeCellRef}
+              />
             </div>
           </div>
         </div>
-        {gameStarted && (
-          <div className="container mt-4">
-            <div className="row justify-content-center">
-              <div className="col">
-                <Table
-                  randomNums={randomNums}
-                  activeAnswerIndex={activeAnswerIndex}
-                  operationType={type}
-                  correctlyAnswered={correctlyAnswered}
-                  activeCellRef={activeCellRef}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-        <div>{message}</div>
-      </div>
+      )}
+      <div>{message}</div>
     </>
   );
 }
