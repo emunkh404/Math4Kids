@@ -148,9 +148,9 @@ export default function Game() {
       setActiveAnswerIndex((prevIndex) => prevIndex + 1);
       setInputValue("");
       setScore((prevScore) => prevScore + 1);
-      setMessage("Correct Answer! 🎉");
+      setMessage("Correct! 🎉");
     } else {
-      setMessage("Try Again! ❌");
+      setMessage("Wrong! ❌");
     }
   };
 
@@ -211,9 +211,8 @@ export default function Game() {
         </div>
       </div>
       <div
-        className={`container mt-4 input-buttons-panel ${
-          isInputFixed ? "fixed-top" : ""
-        }`}
+        className={`container mt-4 ${isInputFixed ? "fixed-top" : ""}`}
+        style={{ backgroundColor: "white" }}
       >
         <div className="row justify-content-center my-2 bg-white">
           <div className="col-auto mx-2">
@@ -265,12 +264,12 @@ export default function Game() {
                 operationType={type}
                 correctlyAnswered={correctlyAnswered}
                 activeCellRef={activeCellRef}
+                message={message}
               />
             </div>
           </div>
         </div>
-      )}
-      <div>{message}</div>
+      )}      
     </>
   );
 }
