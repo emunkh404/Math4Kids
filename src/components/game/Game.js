@@ -21,7 +21,7 @@ export default function Game() {
   const [inputValue, setInputValue] = useState("");
   const [activeAnswerIndex, setActiveAnswerIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [timer, setTimer] = useState(300);
+  const [timer, setTimer] = useState(600);
   const [gameStarted, setGameStarted] = useState(false);
   const [randomNums, setRandomNums] = useState([]);
   const [type, setType] = useState("add");
@@ -47,7 +47,7 @@ export default function Game() {
         localTime: new Date().toLocaleTimeString(),
         userId: localStorage.getItem("userId"),
         type,
-      })
+      },localStorage.getItem("token"))
         .then(() => {
           setMessage("Record saved successfully!");
         })
@@ -134,7 +134,7 @@ export default function Game() {
 
   const resetGameStates = () => {
     setScore(0);
-    setTimer(300);
+    setTimer(600);
     setActiveAnswerIndex(0);
     setCorrectlyAnswered(new Set());
   };

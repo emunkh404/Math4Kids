@@ -11,10 +11,11 @@ export default function States() {
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
     if (userId) {
       setUserIdExists(true);
-      loadStates(userId)
-        .then((fetchedStates) => {
+      loadStates(userId, token)
+        .then((fetchedStates) => {          
           setLoadedStates(fetchedStates);
         })
         .catch((error) => {
