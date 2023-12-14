@@ -40,6 +40,7 @@ export default function Game() {
   const saveGameInfo = () => {
     if (localStorage.getItem("userId")) {
       saveState({
+        grade: title,
         level,
         rate: (score / (randomNums.length || 1)) * 100,
         time: timer,

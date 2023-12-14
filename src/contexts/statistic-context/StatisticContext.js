@@ -42,8 +42,40 @@ const StatisticStore = ({ children }) => {
     }
   };
 
+  const deleteRecord = async (userId, recordId = null, token) => {
+    setState({ ...state, deleting: true });
+    let deleteUrl = `https://math4jem-default-rtdb.firebaseio.com/states.json?auth=${token}`;
+  
+    try {
+      if (recordId) {
+        // Delete only the specific record with recordId
+        await axios.delete(`https://math4jem-default-rtdb.firebaseio.com/states/${recordId}.json?auth=${token}`);
+      } else {
+        // If no specific recordId is provided, fetch all records for the userId.
+        const response = await axios.get(`${deleteUrl}&orderBy="userId"&equalTo="${userId}"`);
+        const records = response.data;
+  
+        // Generate delete requests for each record.
+        const deletePromises = Object.keys(records).map((key) => {
+          return axios.delete(`https://math4jem-default-rtdb.firebaseio.com/states/${key}.json?auth=${token}`);
+        });
+  
+        // Wait for all delete requests to finish.
+        await Promise.all(deletePromises);
+      }
+  
+      setState({ ...state, deleting: false, finished: true, error: null });
+    } catch (error) {
+      setState({ ...state, deleting: false, finished: true, error });
+      console.error("Error deleting records:", error);
+      return Promise.reject(error);
+    }
+  };
+  
+  
+
   return (
-    <StatisticContext.Provider value={{ saveState, loadStates }}>
+    <StatisticContext.Provider value={{ saveState, loadStates, deleteRecord }}>
       {children}
     </StatisticContext.Provider>
   );

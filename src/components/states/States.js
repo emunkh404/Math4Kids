@@ -1,13 +1,53 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, Container, Row, Col } from "react-bootstrap";
+import { Card, Container, Row, Col, FormCheck, Button } from "react-bootstrap";
 import NavUser from "../nav-user/NavUser";
 import InfoNav from "../info-nav/InfoNav";
 import { StatisticContext } from "../../contexts/statistic-context/StatisticContext";
 
 export default function States() {
-  const { loadStates } = useContext(StatisticContext);
+  const { loadStates, deleteRecord } = useContext(StatisticContext);
   const [loadedStates, setLoadedStates] = useState([]);
   const [userIdExists, setUserIdExists] = useState(false);
+  const [selectedRecords, setSelectedRecords] = useState(new Set());
+
+  const handleSelectRecord = (recordId) => {
+    setSelectedRecords((prevSelectedRecords) => {
+      const newSelection = new Set(prevSelectedRecords);
+      if (newSelection.has(recordId)) {
+        newSelection.delete(recordId);
+      } else {
+        newSelection.add(recordId);
+      }
+      return newSelection;
+    });
+  };
+
+  const handleSelectAllRecords = (selectAll) => {
+    if (selectAll) {
+      setSelectedRecords(new Set(loadedStates.map((state) => state.id)));
+    } else {
+      setSelectedRecords(new Set());
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+
+    selectedRecords.forEach((recordId) => {
+        deleteRecord(userId, recordId, token).then(() => {
+            setLoadedStates((currentLoadedStates) =>
+                currentLoadedStates.filter((state) => state.id !== recordId)
+            );
+        }).catch((error) => {
+            console.error("Error deleting record:", error);
+            // Optionally handle the error in the UI
+        });
+    });
+
+    setSelectedRecords(new Set()); // Clear the selection after deletion
+};
+
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -15,7 +55,7 @@ export default function States() {
     if (userId) {
       setUserIdExists(true);
       loadStates(userId, token)
-        .then((fetchedStates) => {          
+        .then((fetchedStates) => {
           setLoadedStates(fetchedStates);
         })
         .catch((error) => {
@@ -86,52 +126,68 @@ export default function States() {
     <div>
       <NavUser />
       <InfoNav />
-
       <Container className="mt-4">
-      {userIdExists ? (
-        loadedStates.length > 0 ? (
-          <Row className="justify-content-center">
-            {loadedStates.map((state, index) => (
-              <Col key={index} md={6} lg={4} className="mb-4">
-                <Card>
-                <Card.Body>
-                  <Card.Title>
-                    Level-{state.level}:{" "}
-                    {state.type === "sub"
-                      ? "Subtraction"
-                      : state.type === "mul"
-                      ? "Multiplication"
-                      : state.type === "div"
-                      ? "Division"
-                      : "Addition"}
-                  </Card.Title>
-                  <Card.Text>
-                    You got: {convertRateToGrade(state.rate)}
-                  </Card.Text>
-                  <Card.Text>Time left: {formatTime(state.time)}</Card.Text>
-                  <Card.Text>
-                    {state.localTime} {state.date}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-          </Row>
+        {userIdExists ? (
+          loadedStates.length > 0 ? (
+            <>
+              <Row className="justify-content-center">
+                <Col xs={12} className="text-center mb-2">
+                  <FormCheck
+                    onChange={(e) => handleSelectAllRecords(e.target.checked)}
+                  />
+                  <Button onClick={handleDeleteSelected} variant="danger">
+                    Delete Selected
+                  </Button>
+                </Col>
+              </Row>
+              <Row className="justify-content-center">
+                {loadedStates.map((state, index) => (
+                  <Col key={state.id} md={6} lg={4} className="mb-4">
+                    <Card>
+                      <Card.Body>
+                        <Card.Title>
+                          {state.grade}: level-{state.level}{" "}
+                          {state.type === "sub"
+                            ? "Subtraction"
+                            : state.type === "mul"
+                            ? "Multiplication"
+                            : state.type === "div"
+                            ? "Division"
+                            : "Addition"}
+                        </Card.Title>
+                        <FormCheck
+                          checked={selectedRecords.has(state.id)}
+                          onChange={() => handleSelectRecord(state.id)}
+                        />
+                        <Card.Text>
+                          You got: {convertRateToGrade(state.rate)}
+                        </Card.Text>
+                        <Card.Text>
+                          Time left: {formatTime(state.time)}
+                        </Card.Text>
+                        <Card.Text>
+                          {state.localTime} {state.date}
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </>
           ) : (
             <Row className="justify-content-center">
-            <Col xs={12} className="text-center">
-              <p>You don't have any record or something is wrong.</p>
-            </Col>
+              <Col xs={12} className="text-center">
+                <p>You don't have any record or something is wrong.</p>
+              </Col>
             </Row>
           )
         ) : (
           <Row className="justify-content-center">
-          <Col xs={12} className="text-center">
-            <p>You need to login or signup for your record to be saved.</p>
+            <Col xs={12} className="text-center">
+              <p>You need to login or signup for your record to be saved.</p>
             </Col>
-            </Row>
+          </Row>
         )}
-     
       </Container>
     </div>
   );
