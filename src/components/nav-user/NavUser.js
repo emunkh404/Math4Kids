@@ -47,7 +47,7 @@ export default function NavUser() {
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll">
-          🎂 {/* Birthday cake emoji as the toggle icon */}
+        🎲 
         </Navbar.Toggle>
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -55,7 +55,7 @@ export default function NavUser() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            {/* Add Nav.Link items here if needed */}
+           
           </Nav>
           {userId ? (
             <Button onClick={handleLogout} variant="outline-danger">

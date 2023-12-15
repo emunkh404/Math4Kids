@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Alert } from 'react-bootstrap';
 import FlashCard from "./FlashCard";
 import NavUser from "../nav-user/NavUser";
 import InfoNav from "../info-nav/InfoNav";
@@ -27,6 +28,7 @@ export default function FlashCards() {
   const [emeralds, setEmeralds] = useState(0);
   const [gems, setGems] = useState(0);
   const [timer, setTimer] = useState(5);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     // Start the timer only from the second question onwards
@@ -49,13 +51,26 @@ export default function FlashCards() {
     }
   }, [currentQuestion, correctCount]);
 
+  useEffect(() => {
+    let timer;
+    if (showAlert) {
+      // Set a timer to hide the alert after 3 seconds
+      timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+    }
+
+    // Clear the timer if the component unmounts or if showAlert changes
+    return () => clearTimeout(timer);
+  }, [showAlert]);
+
+
   // Update the handleAnswer function to include new rewards
   const handleAnswer = (isCorrect) => {
     if (isCorrect) {
       const newCorrectCount = correctCount + 1;
       setCorrectCount(newCorrectCount);
-
-      // Update the logic for earning new types of rewards
+     
       if (newCorrectCount % 10 === 0) {
         setStars(stars + 1);
       }
@@ -71,15 +86,26 @@ export default function FlashCards() {
       setCurrentQuestion(generateQuestion());
       setTimer(5);
     } else {
-      setCorrectCount(0); // Reset on wrong answer
-      alert(`Wrong answer! Try again.`);
+      setCorrectCount(0); 
+      setShowAlert(true);
     }
   };
 
+  const handleAlertClose = () => setShowAlert(false);
+
+  const renderIcons = (count, icon) => {
+    let icons = [];
+    for (let i = 0; i < count; i++) {
+      icons.push(<span key={i} className="icon">{icon}</span>);
+    }
+    return icons;
+  };
+  
   return (
     <>
       <NavUser />
       <InfoNav />
+      
       <div className="container game-container mt-4">
         <FlashCard
           question={currentQuestion.question}
@@ -87,42 +113,31 @@ export default function FlashCards() {
           onAnswer={handleAnswer}
           timer={timer}
         />
+        {showAlert && (
+        <Alert variant="danger" onClose={handleAlertClose} dismissible>
+          <Alert.Heading>Incorrect Answer!</Alert.Heading>
+          <p>Wrong answer! Try again.</p>
+        </Alert>
+      )}
         <div className="score-board mt-3">
           <p className="correct-answers">
             Correct Answers: <span className="count">{correctCount}</span>
           </p>
           <p className="stars">
-            Stars:{" "}
-            <span className="icons">
-            {Array(stars).fill(<img src="/images/starImage.png" alt="Star" className="icon-image" />)}
-            </span>
+            Stars: <span className="icons new-star">{renderIcons(stars, "⭐")}</span>
           </p>
           <p className="diamonds">
-            Diamonds:{" "}
-            <span className="icons">
-              {Array(diamonds).fill(
-                <img src="/images/diamondImage.png" alt="Diamond" className="icon-image"/>
-              )}
-            </span>
+            Diamonds: <span className="icons new-diamond">{renderIcons(diamonds, "🔷")}</span>
           </p>
           <p className="emeralds">
-            Emeralds:{" "}
-            <span className="icons">
-              {Array(emeralds).fill(
-                <img src="/images/emeraldImage.png" alt="Emerald" className="icon-image"/>
-              )}
-            </span>
+            Emeralds: <span className="icons new-emerald">{renderIcons(emeralds, "🔮")}</span>
           </p>
           <p className="gems">
-            Gems:{" "}
-            <span className="icons">
-              {Array(gems).fill(
-                <img src="/public/images/gemImage.png" alt="Gem" className="icon-image"/>
-              )}
-            </span>
+            Gems: <span className="icons new-gem">{renderIcons(gems, "👑")}</span>
           </p>
         </div>
       </div>
     </>
   );
+  
 }
